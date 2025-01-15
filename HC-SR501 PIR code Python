@@ -1,0 +1,28 @@
+import RPi.GPIO as GPIO # type: ignore
+import time
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+PIR_PIN = 14 # Assigne GPIO14 pin 8 au PIR
+GPIO.setup(PIR_PIN, GPIO.IN) # Setup GPIO pin PIR à l'entrée
+print('Initialisation du capteur...')
+time.sleep(60) # Temps de démarrage du capteur, 60 seconds
+print('Active')
+
+
+def pir(pin):
+        print('Motion Detected!') # Monvement Detecté
+
+GPIO.add_event_detect(14, GPIO.FALLING, callback=pir, bouncetime=100)
+
+print('[Press Ctrl + C to end program!]') # Pressez Crtl + C pour mettre fin au programme
+try:
+    while True: 
+          time.sleep(0.001) # Tant qu'il detectera une présence, le capteur continue
+
+except KeyboardInterrupt: # Sauf entrée des touches de clavier, fin du Script
+      print('\nScript ended')
+
+finally:
+      GPIO.cleanup()
