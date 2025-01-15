@@ -6,7 +6,7 @@
 
 // Définir les broches du moteur pour l'Arduino Mega
 Stepper stepper(STEPS, 8, 10, 9, 11);
-Stepper stepper2(STEPS, 4, 12, 5, 13);
+//Stepper stepper2(STEPS, 4, 12, 5, 13);
 
 // Définir la broche du bouton poussoir
 const int buttonPin = 6;  // Broche du bouton poussoir
