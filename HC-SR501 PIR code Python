@@ -1,28 +1,31 @@
-import RPi.GPIO as GPIO # type: ignore
+import RPi.GPIO as GPIO  # type: ignore
 import time
 
-
+# Configuration des GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-PIR_PIN = 14 # Assigne GPIO14 pin 8 au PIR
-GPIO.setup(PIR_PIN, GPIO.IN) # Setup GPIO pin PIR à l'entrée
-print('Initialisation du capteur...')
-time.sleep(60) # Temps de démarrage du capteur, 60 seconds
-print('Active')
 
+PIR_PIN = 14  # Assigne GPIO14 pin 8 au PIR
+GPIO.setup(PIR_PIN, GPIO.IN)  # Setup GPIO pin PIR à l'entrée
+
+print('Initialisation du capteur...')
+time.sleep(60)  # Temps de démarrage du capteur, 60 secondes
+print('Capteur actif')
 
 def pir(pin):
-        print('Motion Detected!') # Monvement Detecté
+    print('Personne détectée à environ 1 mètre!')  # Mouvement détecté
 
-GPIO.add_event_detect(14, GPIO.FALLING, callback=pir, bouncetime=100)
+# Détection d'événements sur le pin PIR
+GPIO.add_event_detect(PIR_PIN, GPIO.RISING, callback=pir, bouncetime=100)
 
-print('[Press Ctrl + C to end program!]') # Pressez Crtl + C pour mettre fin au programme
+print('[Appuyez sur Ctrl + C pour terminer le programme!]')  # Pressez Ctrl + C pour mettre fin au programme
 try:
-    while True: 
-          time.sleep(0.001) # Tant qu'il detectera une présence, le capteur continue
+    while True:
+        time.sleep(0.001)  # Boucle active pour maintenir le programme en cours d'exécution
 
-except KeyboardInterrupt: # Sauf entrée des touches de clavier, fin du Script
-      print('\nScript ended')
+except KeyboardInterrupt:  # Sauf entrée des touches de clavier, fin du Script
+    print('\nScript terminé')
 
 finally:
+    GPIO.cleanup()  # Nettoyage des GPIO
       GPIO.cleanup()
