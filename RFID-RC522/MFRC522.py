@@ -2,6 +2,11 @@
 # -*- coding: utf8 -*-
 # Version modifiee de la librairie https://github.com/mxgxw/MFRC522-python
 
+# Modifié par Mathis Benoit
+# IDE : Thonny
+
+#Dernière modification : 28/01/2025
+
 from __future__ import print_function
 import RPi.GPIO as GPIO
 import spi
@@ -345,7 +350,7 @@ class MFRC522:
       while (c<16):
         if(backData[c]!=0) :
           try :
-            print (str(unichr(backData[c])),end="")
+            print (str(chr(backData[c])),end="")
           except :
             print(" Contenu Illisible")
         c+=1
@@ -402,3 +407,4 @@ class MFRC522:
     self.Write_MFRC522(self.TxAutoReg, 0x40)
     self.Write_MFRC522(self.ModeReg, 0x3D)
     self.AntennaOn()
+
