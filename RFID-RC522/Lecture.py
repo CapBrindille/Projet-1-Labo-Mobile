@@ -54,3 +54,10 @@ while continue_reading:
             MIFAREReader.MFRC522_StopCrypto1()
         else:
             print ("Erreur d\'Authentification")
+            
+        # Stop
+        MIFAREReader.MFRC522_StopCrypto1()
+        continue_reading = False
+            
+            
+
