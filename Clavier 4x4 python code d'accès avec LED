@@ -13,6 +13,7 @@ LED_VERTE = 22
 # Code d'accès défini
 CODE_CORRECT = "1234"
 code_saisi = ""
+tentatives = 0  # Nombre d'essais
 
 # Mappage des touches
 TOUCHES = [
@@ -70,18 +71,30 @@ def lire_clavier():
 
 def verifier_code():
     """Vérifie si le code saisi est correct"""
-    global code_saisi
+    global code_saisi, tentatives
     GPIO.output(LED_JAUNE, 0)  # Éteint la LED jaune après saisie
+
     if code_saisi == CODE_CORRECT:
         print("✅ Code correct !")
         GPIO.output(LED_VERTE, 1)  # Allume la LED verte
         time.sleep(2)
         GPIO.output(LED_VERTE, 0)  # Éteint la LED verte
+        tentatives = 0  # Réinitialise les tentatives après succès
     else:
-        print("❌ Code incorrect !")
+        tentatives += 1
+        print(f"❌ Code incorrect ! Tentative {tentatives}/3")
         GPIO.output(LED_ROUGE, 1)  # Allume la LED rouge
         time.sleep(2)
         GPIO.output(LED_ROUGE, 0)  # Éteint la LED rouge
+
+        if tentatives >= 3:  # Si 3 erreurs consécutives
+            print("⛔ Trop d'essais ! Attendez 10 secondes...")
+            for _ in range(5):  # LED rouge clignote 5 fois (10 secondes d'attente)
+                GPIO.output(LED_ROUGE, 1)
+                time.sleep(1)
+                GPIO.output(LED_ROUGE, 0)
+                time.sleep(1)
+            tentatives = 0  # Réinitialise les tentatives après l'attente
 
     code_saisi = ""  # Réinitialiser le code après vérification
 
