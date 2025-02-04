@@ -1,0 +1,26 @@
+import RPi.GPIO as GPIO
+import time
+
+# Définition des broches
+PIR_PIN = 12   # Broche GPIO du capteur PIR
+LED_PIN = 18   # Broche GPIO de la LED
+
+# Configuration des broches
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIR_PIN, GPIO.IN)   # Capteur PIR en entrée
+GPIO.setup(LED_PIN, GPIO.OUT)  # LED en sortie
+
+try:
+    print("Capteur PIR activé. En attente de mouvement...")
+    while True:
+        if GPIO.input(PIR_PIN):  # Si un mouvement est détecté
+            print("Mouvement détecté ! LED allumée")
+            GPIO.output(LED_PIN, GPIO.HIGH)  # Allumer la LED
+        else:
+            GPIO.output(LED_PIN, GPIO.LOW)  # Éteindre la LED
+
+        time.sleep(0.1)  # Petite pause pour éviter une détection trop rapide
+
+except KeyboardInterrupt:
+    print("Programme interrompu. Nettoyage des GPIO...")
+    GPIO.cleanup()  # Réinitialisation des GPIO
