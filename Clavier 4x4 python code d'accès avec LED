@@ -56,13 +56,13 @@ def lire_clavier():
                 touche = TOUCHES[l][c]
                 print("Touche pressée :", touche)
 
-                if touche == "#":  # Validation du code
-                    verifier_code()
-                elif touche == "*":  # Réinitialisation
+                if touche == "*":  # Réinitialisation
                     code_saisi = ""
                     print("Code réinitialisé")
-                else:
+                elif touche.isdigit():  # Si c'est un chiffre
                     code_saisi += touche
+                    if len(code_saisi) == 4:  # Vérifier le code après 4 chiffres
+                        verifier_code()
 
                 while GPIO.input(LIGNES[l]) == 0:  # Attente du relâchement
                     time.sleep(0.1)
@@ -100,7 +100,7 @@ def verifier_code():
 
 # Boucle principale
 try:
-    print("Entrez le code et appuyez sur # pour valider")
+    print("Entrez un code de 4 chiffres")
     while True:
         lire_clavier()
         time.sleep(0.1)  # Petite pause pour éviter les rebonds
