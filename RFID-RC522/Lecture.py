@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # Version modifiee de la librairie https://github.com/mxgxw/MFRC522-python
-#
 # Modifié par Mathis Benoit
-# IDE : Thonny 
+# IDE : Thonny
+#
+# dernière modification : 22/05/2025
 
-import RPi.GPIO as GPIO
-import MFRC522
-import signal
+#Appel des librairies 
+import RPi.GPIO as GPIO   #Librairie pour utiliser les GPIO (pins) de la RaspberryPi
+import MFRC522 #Librairie pour utiliser le lecteur RFID RC522
+import signal #Librairie pour exploiter un signal
 
 continue_reading = True
 
@@ -21,35 +23,26 @@ def end_read(signal,frame):
 signal.signal(signal.SIGINT, end_read)
 MIFAREReader = MFRC522.MFRC522()
 
-data = []
-texte = input("Entrez une chaine de caractère :\n")
-for c in texte:
-    if (len(data)<16):			#Le message doit faire 16 caractères 
-        data.append(int(ord(c)))
-while(len(data)!=16):			#Si le message rentré ne fais pas 16 caractères, on rajoute des 0 pour qu'elle fasse la bonne taille
-    data.append(0)
-print ("Placez votre carte RFID")
+print ("Passer le tag RFID a lire")
 
 while continue_reading:
-      
+
     # Detecter les tags
     (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
     # Une carte est detectee
     if status == MIFAREReader.MI_OK:
         print ("Carte detectee")
-    
+
     # Recuperation UID
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
 
     if status == MIFAREReader.MI_OK:
+        print ("UID de la carte : "+str(uid[0])+"."+str(uid[1])+"."+str(uid[2])+"."+str(uid[3]))
 
-        # Print UID
-        print ("UID de la carte https://github.com/mxgxw/MFRC522-pythonhttps://github.com/mxgxw/MFRC522-pythonhttps://github.com/mxgxw/MFRC522-pythonhttps://github.com/mxgxw/MFRC522-python: "+str(uid[0])+"."+str(uid[1])+"."+str(uid[2])+"."+str(uid[3]))
-    
         # Clee d authentification par defaut
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
-        
+
         # Selection du tag
         MIFAREReader.MFRC522_SelectTag(uid)
 
@@ -57,19 +50,11 @@ while continue_reading:
         status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
 
         if status == MIFAREReader.MI_OK:
-            print ("Le secteur 8 contient actuellement : ")
             MIFAREReader.MFRC522_Read(8)
-
-            print ("Ecriture ...")
-            MIFAREReader.MFRC522_Write(8, data)
-
-            print ("Le secteur 8 contient maintenant : ")
-            MIFAREReader.MFRC522_Read(8)
-
-            # Stop
             MIFAREReader.MFRC522_StopCrypto1()
-            continue_reading = False
-
         else:
-            print ("Erreur d authentication")
-
+            print ("Erreur d\'Authentification")
+            
+        # Stop
+        MIFAREReader.MFRC522_StopCrypto1()
+        continue_reading = False
