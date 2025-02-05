@@ -18,7 +18,7 @@ try:
         if GPIO.input(PIR_PIN):  # Si un mouvement est détecté
             print("Mouvement détecté ! LED allumée")
             GPIO.output(LED_PIN, GPIO.HIGH)  # Allumer la LED
-            MFRC522()
+            MFRC522
         else:
             GPIO.output(LED_PIN, GPIO.LOW)  # Éteindre la LED
 
