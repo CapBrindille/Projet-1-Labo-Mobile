@@ -1,10 +1,9 @@
 # Importation des librairies
 import RPi.GPIO as GPIO
 import time
-import MFRC522
 
 # Définition des broches
-PIR_PIN = 12   # Broche GPIO du capteur PIR
+PIR_PIN = 5   # Broche GPIO du capteur PIR
 LED_PIN = 18   # Broche GPIO de la LED
 
 # Configuration des broches
@@ -18,7 +17,6 @@ try:
         if GPIO.input(PIR_PIN):  # Si un mouvement est détecté
             print("Mouvement détecté ! LED allumée")
             GPIO.output(LED_PIN, GPIO.HIGH)  # Allumer la LED
-            MFRC522
         else:
             GPIO.output(LED_PIN, GPIO.LOW)  # Éteindre la LED
 
