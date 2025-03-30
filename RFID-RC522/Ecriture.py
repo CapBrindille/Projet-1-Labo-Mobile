@@ -26,8 +26,8 @@ texte = input("Entrez une chaine de caractère :\n")
 for c in texte:
     if (len(data)<16):			#Le message doit faire 16 caractères 
         data.append(int(ord(c)))
-while(len(data)!=16):			#Si le message rentré ne fais pas 16 caractères, on rajoute des 0 pour qu'elle fasse la bonne taille
-    data.append(0)
+while(len(data)!=16):			#Si le message rentré ne fait pas 16 caractères, 
+    data.append(0)              #on rajoute des 0 pour qu'elle fasse la bonne taille
 print ("Placez votre carte RFID")
 
 while continue_reading:
@@ -61,8 +61,8 @@ while continue_reading:
             MIFAREReader.MFRC522_Read(8)
 
             print ("Ecriture ...")
-            MIFAREReader.MFRC522_Write(8, data)
-
+            MIFAREReader.MFRC522_Write(8, data)         #Remplacement des anciennes données
+                                                        #avec les nouvelles
             print ("Le secteur 8 contient maintenant : ")
             MIFAREReader.MFRC522_Read(8)
 
