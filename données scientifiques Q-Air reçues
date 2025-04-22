@@ -1,0 +1,24 @@
+import time
+import board
+import busio
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
+from datetime import datetime
+
+# Initialisation du bus I2C
+i2c = busio.I2C(board.SCL, board.SDA)
+
+# Initialisation du convertisseur ADC
+ads = ADS.ADS1115(i2c)
+
+# Configuration d'un canal analogique (A0 par défaut)
+canal_gaz = AnalogIn(ads, ADS.P0)
+
+print("Lecture du capteur MQ-135 (branché sur ADS1115)...\n")
+
+while True:
+    voltage = canal_gaz.voltage  # Valeur analogique convertie en tension (V)
+    valeur_brute = canal_gaz.value  # Valeur brute (0 à 65535)
+    
+    print(f"{datetime.now().strftime('%H:%M:%S')} | Tension: {voltage:.2f} V | Valeur brute: {valeur_brute}")
+    time.sleep(2)
